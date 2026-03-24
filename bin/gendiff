@@ -26,5 +26,5 @@ $firstFilePath = $args['<firstFile>'];
 $secondFilePath = $args['<secondFile>'];
 
 if ($firstFilePath && $secondFilePath) {
-    genDiff($firstFilePath, $secondFilePath);
+    echo genDiff($args['<firstFile>'], $args['<secondFile>']) . PHP_EOL;
 }

@@ -19,7 +19,8 @@
             "email": "L1rnend@yandex.by"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "docopt/docopt": "^1.0"
     }
