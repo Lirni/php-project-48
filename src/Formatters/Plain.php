@@ -42,5 +42,5 @@ function format(array $ast, string $parentPath = ''): string
                 throw new \Exception("Unknown node type: {$node['type']}");
         }
     }, $ast);
-    return implode("\n", array_filter($lines));
+    return implode("\n", array_filter($lines, fn($val) => !is_null($val)));
 }

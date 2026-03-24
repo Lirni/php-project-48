@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 function parse(string $content, string $extension): array
 {
-    if (empty($content)) {
+    if ($content === '') {
         return [];
     }
 
