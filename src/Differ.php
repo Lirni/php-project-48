@@ -3,7 +3,7 @@
 namespace Hexlet\Code\Differ;
 
 use function Hexlet\Code\Parsers\parse;
-use function Hexlet\Code\Formatters\Stylish\format as formatStylish;
+use function Hexlet\Code\Formatters\format;
 
 function buildAst(array $data1, array $data2): array
 {
@@ -52,5 +52,5 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 
 
     $ast = buildAst($data1, $data2);
 
-    return formatStylish($ast);
+    return format($ast, $formatName);
 }

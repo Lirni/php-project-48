@@ -13,28 +13,43 @@ class DifferTest extends TestCase
         return __DIR__ . "/fixtures/" . $name;
     }
 
-    public function testGenDiff(): void
+    public function testGenDiffDefault(): void
     {
         $path1 = $this->getFixturePath('file1.json');
         $path2 = $this->getFixturePath('file2.json');
-        $expected = file_get_contents($this->getFixturePath('expected_stylish.txt'));
-        $this->assertEquals(trim($expected), trim(genDiff($path1, $path2)));
+        $expected = (string) file_get_contents($this->getFixturePath('expected_stylish.txt'));
+
+        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2)));
     }
+
     public function testGenDiffJson(): void
     {
         $path1 = $this->getFixturePath('file1.json');
         $path2 = $this->getFixturePath('file2.json');
-        $expected = file_get_contents($this->getFixturePath('expected_stylish.txt'));
-        $this->assertEquals(trim($expected), trim(genDiff($path1, $path2)));
+        $expected = (string) file_get_contents($this->getFixturePath('expected_stylish.txt'));
+
+        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2, 'stylish')));
     }
 
     public function testGenDiffYaml(): void
     {
-        $path1 = __DIR__ . "/fixtures/file1.yml";
-        $path2 = __DIR__ . "/fixtures/file2.yml";
-        $expected = file_get_contents(__DIR__ . "/fixtures/expected_stylish.txt");
-        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $path1 = $this->getFixturePath('file1.yml');
+        $path2 = $this->getFixturePath('file2.yml');
+        $expected = (string) file_get_contents($this->getFixturePath('expected_stylish.txt'));
 
-        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2)));
+        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2, 'stylish')));
+    }
+
+    public function testGenDiffPlain(): void
+    {
+        $path1 = $this->getFixturePath('file1.json');
+        $path2 = $this->getFixturePath('file2.json');
+        $expected = (string) file_get_contents($this->getFixturePath('expected_plain.txt'));
+
+        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2, 'plain')));
     }
 }

@@ -1,9 +1,12 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
 
 use function Hexlet\Code\Differ\genDiff;
+
 $doc = <<<DOC
 Generate diff
 
@@ -19,7 +22,7 @@ Options:
 
 DOC;
 
-$args = \Docopt::handle($doc);
+$args = \Docopt::handle($doc, ['version' => '0.0.1']);
 
 $firstFilePath = $args['<firstFile>'];
 $secondFilePath = $args['<secondFile>'];
