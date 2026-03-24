@@ -52,4 +52,12 @@ class DifferTest extends TestCase
         $normalizedExpected = str_replace("\r\n", "\n", $expected);
         $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2, 'plain')));
     }
+    public function testGenDiffJsonFormat(): void
+    {
+        $path1 = $this->getFixturePath('file1.json');
+        $path2 = $this->getFixturePath('file2.json');
+        $expected = (string) file_get_contents($this->getFixturePath('expected_json.txt'));
+        $normalizedExpected = str_replace("\r\n", "\n", $expected);
+        $this->assertEquals(trim($normalizedExpected), trim(genDiff($path1, $path2, 'json')));
+    }
 }
