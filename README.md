@@ -5,5 +5,5 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Lirni_php-project-48&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Lirni_php-project-48)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Lirni_php-project-48&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Lirni_php-project-48)
 
-[![asciicast](https://asciinema.org/a/UoIwDD2gb21I5Ep9.svg)](https://asciinema.org/a/UoIwDD2gb21I5Ep9)
+[![asciicast](https://asciinema.org/a/emeOklDzQH1HF3CZ.svg)](https://asciinema.org/a/emeOklDzQH1HF3CZ)
 
