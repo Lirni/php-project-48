@@ -19,7 +19,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
     $data2 = json_decode((string) file_get_contents($pathToFile2), true);
 
     $allKeys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    
+
     $sortedKeys = $allKeys;
     sort($sortedKeys);
 
@@ -30,7 +30,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         if ($existsIn1 && $existsIn2 && $data1[$key] === $data2[$key]) {
             return "    {$key}: " . toString($data1[$key]);
         }
-        
+
         if ($existsIn1 && $existsIn2 && $data1[$key] !== $data2[$key]) {
             $line1 = "  - {$key}: " . toString($data1[$key]);
             $line2 = "  + {$key}: " . toString($data2[$key]);
@@ -42,7 +42,6 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         }
 
         return "  + {$key}: " . toString($data2[$key]);
-        
     }, $sortedKeys);
 
     $result = "{\n" . implode("\n", $lines) . "\n}";
