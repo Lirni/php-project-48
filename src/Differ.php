@@ -3,21 +3,44 @@
 namespace Hexlet\Code\Differ;
 
 use function Hexlet\Code\Parsers\parse;
+use function Hexlet\Code\Formatters\Stylish\format as formatStylish;
 
-function toString(mixed $value): string
+function buildAst(array $data1, array $data2): array
 {
-    if (is_bool($value)) {
-        return $value ? 'true' : 'false';
-    }
-    if (is_null($value)) {
-        return 'null';
-    }
-    return (string) $value;
+    $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
+    sort($keys);
+
+    return array_map(function ($key) use ($data1, $data2) {
+        if (!array_key_exists($key, $data1)) {
+            return ['key' => $key, 'type' => 'added', 'value' => $data2[$key]];
+        }
+        if (!array_key_exists($key, $data2)) {
+            return ['key' => $key, 'type' => 'deleted', 'value' => $data1[$key]];
+        }
+
+        if (is_array($data1[$key]) && is_array($data2[$key])) {
+            return [
+                'key' => $key,
+                'type' => 'nested',
+                'children' => buildAst($data1[$key], $data2[$key])
+            ];
+        }
+
+        if ($data1[$key] !== $data2[$key]) {
+            return [
+                'key' => $key,
+                'type' => 'changed',
+                'oldValue' => $data1[$key],
+                'newValue' => $data2[$key]
+            ];
+        }
+
+        return ['key' => $key, 'type' => 'unchanged', 'value' => $data1[$key]];
+    }, $keys);
 }
 
-function genDiff(string $pathToFile1, string $pathToFile2): string
+function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
 {
-
     $content1 = file_get_contents($pathToFile1);
     $content2 = file_get_contents($pathToFile2);
 
@@ -27,30 +50,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
     $data1 = parse((string) $content1, $extension1);
     $data2 = parse((string) $content2, $extension2);
 
-    $allKeys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    $sortedKeys = $allKeys;
-    sort($sortedKeys);
+    $ast = buildAst($data1, $data2);
 
-    $lines = array_map(function ($key) use ($data1, $data2) {
-        $exists1 = array_key_exists($key, $data1);
-        $exists2 = array_key_exists($key, $data2);
-
-        if ($exists1 && $exists2 && $data1[$key] === $data2[$key]) {
-            return "    {$key}: " . toString($data1[$key]);
-        }
-
-        if ($exists1 && $exists2 && $data1[$key] !== $data2[$key]) {
-            $line1 = "  - {$key}: " . toString($data1[$key]);
-            $line2 = "  + {$key}: " . toString($data2[$key]);
-            return "{$line1}\n{$line2}";
-        }
-
-        if ($exists1 && !$exists2) {
-            return "  - {$key}: " . toString($data1[$key]);
-        }
-
-        return "  + {$key}: " . toString($data2[$key]);
-    }, $sortedKeys);
-
-    return "{\n" . implode("\n", $lines) . "\n}";
+    return formatStylish($ast);
 }

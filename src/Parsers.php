@@ -6,13 +6,17 @@ use Symfony\Component\Yaml\Yaml;
 
 function parse(string $content, string $extension): array
 {
+    if (empty($content)) {
+        return [];
+    }
+
+    $data = null;
     if ($extension === 'json') {
-        return json_decode($content, true);
+        $data = json_decode($content, true);
+    } elseif ($extension === 'yml' || $extension === 'yaml') {
+        $data = Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
+    } else {
+        throw new \Exception("Unknown extension: {$extension}");
     }
-
-    if ($extension === 'yml' || $extension === 'yaml') {
-        return (array) Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
-    }
-
-    throw new \Exception("Unknown extension: {$extension}");
+    return json_decode((string) json_encode($data), true);
 }
